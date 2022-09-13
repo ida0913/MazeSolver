@@ -62,4 +62,7 @@ public class Square {
 		}
 		return false;
 	}
+	public void reset(){
+		status = UNKNOWN;
+	}
 }
