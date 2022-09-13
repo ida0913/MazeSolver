@@ -45,35 +45,47 @@ public class Maze {
 
     }
 
-    public List<Square> getNeighbors(Square s){
+    public List<Square> getNeighbors(Square s) {
 
         int row = s.getRow();
         int col = s.getCol();
 
         ArrayList<Square> neighbors = new ArrayList<>();
 
-        if(maze[row-1][col]!= null){
-            neighbors.add(maze[row-1][col]);
+        if (maze[row - 1][col] != null) {
+            neighbors.add(maze[row - 1][col]);
         }
-        if(maze[row+1][col] != null){
-            neighbors.add(maze[row+1][col]);
+        if (maze[row + 1][col] != null) {
+            neighbors.add(maze[row + 1][col]);
         }
-        if(maze[row][col-1]!= null){
-            neighbors.add(maze[row][col-1]);
+        if (maze[row][col - 1] != null) {
+            neighbors.add(maze[row][col - 1]);
         }
-        if(maze[row][col+1]!= null){
-            neighbors.add(maze[row][col+1]);
+        if (maze[row][col + 1] != null) {
+            neighbors.add(maze[row][col + 1]);
         }
         return neighbors;
     }
 
-    public void reset(){
-        
-        for(int i = 0; i<maze.length; i++){
-            for(int j = 0; j<maze[0].length; j++){
+    public void reset() {
+
+        for (int i = 0; i < maze.length; i++) {
+            for (int j = 0; j < maze[0].length; j++) {
                 maze[i][j].reset();
             }
         }
+    }
+
+    public String toString() {
+        String ret = "";
+        for (int i = 0; i < maze.length; i++) {
+            for (int j = 0; j < maze[0].length; j++) {
+
+                ret += maze[i][j].toString() + " ";
+            }
+            ret += "\n";
+        }
+        return ret;
     }
 
     public Square getStart() {
