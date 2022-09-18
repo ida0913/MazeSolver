@@ -25,7 +25,7 @@ public interface StackADT
      * Return how many items are in the stack
      * @return the number of items in the stack
      */
-    public int size();
+    public int getSize();
 
     /**
      * Determine if the stack is empty

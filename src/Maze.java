@@ -11,6 +11,8 @@ import java.util.*;
 public class Maze {
     private Square[][] maze;
     private int[][] testMaze;
+    public boolean solved = false;
+    public boolean isSolveable = false;
 
     public boolean loadMaze(String filename) {
 
@@ -34,9 +36,7 @@ public class Maze {
             }
             for (int[] x : testMaze) {
                 for (int y : x) {
-                    System.out.print(y + " ");
                 }
-                System.out.println();
             }
             scanner.close();
 
@@ -48,12 +48,25 @@ public class Maze {
 
     }
 
+    public boolean getSolved(){
+        return solved;
+    }
+
+    public boolean getSolvable(){
+        return isSolveable;
+    }
+
+    public void setSolved(boolean a){
+        solved = a;
+    }
+    public void setSolvable(boolean a){
+        isSolveable = a;
+    }
+
     public List<Square> getNeighbors(Square s) {
 
         int row = s.getRow();
         int col = s.getCol();
-        System.out.println(row);
-        System.out.println(col);
 
         ArrayList<Square> neighbors = new ArrayList<>();
         if (row - 1 > 0) {
@@ -94,6 +107,8 @@ public class Maze {
                 maze[i][j].reset();
             }
         }
+        isSolveable = false;
+        solved = false;
     }
 
     public String toString() {

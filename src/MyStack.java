@@ -1,21 +1,21 @@
 import java.util.EmptyStackException;
 
-public class MyStack {
-    private Integer[] stack;
+public class MyStack implements StackADT {
+    private Square[] stack;
     private int size;
 
     public MyStack(int initCap) {
-        stack = new Integer[initCap];
+        stack = new Square[initCap];
         size = this.getSize();
     }
 
     public MyStack() {
 
-        stack = new Integer[2];
+        stack = new Square[2];
         size = this.getSize();
     }
 
-    public Integer[] getStack() {
+    public Square[] getStack() {
         return stack;
     }
 
@@ -33,11 +33,12 @@ public class MyStack {
     public String toString() {
         size = this.getSize();
         String string = "";
-        for (int i = 0; i < size; i++) {
+        for (int i = size-1; i >= 0; i--) {
             if (string.length() == 0) {
                 string += String.valueOf(stack[i]) + "      <----- TOP \n";
+            }else{
+                string += String.valueOf(stack[i]) + "\n";
             }
-            string += String.valueOf(stack[i]) + "\n";
         }
 
         return string + "\n--------";
@@ -47,25 +48,25 @@ public class MyStack {
         return size == 0;
     }
 
-    public Integer peek() {
+    public Square peek() {
         if (this.isEmpty())
             throw new EmptyStackException();
 
         return stack[size - 1];
     }
 
-    public Integer pop() {
+    public Square pop() {
         if (this.isEmpty())
             throw new EmptyStackException();
 
-        int temp = stack[size - 1];
+        Square temp = stack[size - 1];
         stack[size - 1] = null;
         size = this.getSize();
         return temp;
 
     }
 
-    public void push(int num) {
+    public void push(Square num) {
         if (size == stack.length)
             doubleCapacity();
         stack[size] = num;
@@ -73,7 +74,7 @@ public class MyStack {
     }
 
     public void doubleCapacity() {
-        Integer[] newStack = new Integer[stack.length * 2];
+        Square[] newStack = new Square[stack.length * 2];
         size = this.getSize();
         for (int i = 0; i < size; i++) {
             newStack[i] = stack[i];
@@ -81,5 +82,9 @@ public class MyStack {
 
         stack = newStack;
         size = this.getSize();
+    }
+
+    public void clear(){
+        stack = new Square[2];
     }
 }
