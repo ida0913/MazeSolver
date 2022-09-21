@@ -3,6 +3,12 @@ import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
+import java.awt.*;
+import java.awt.font.TextAttribute;
+
+import javax.swing.*;
+import java.net.URL;
+import java.text.*;
 
 import javax.swing.SpinnerDateModel;
 
@@ -10,9 +16,8 @@ import java.util.*;
 
 public class Maze {
     private Square[][] maze;
-    private int[][] testMaze;
-    public boolean solved = false;
-    public boolean isSolveable = false;
+    int rows;
+    int cols;
 
     public boolean loadMaze(String filename) {
 
@@ -21,23 +26,18 @@ public class Maze {
         try {
             file = new File(filename);
             scanner = new Scanner(file);
-            int rows = scanner.nextInt();
-            int cols = scanner.nextInt();
+            rows = scanner.nextInt();
+            cols = scanner.nextInt();
             this.maze = new Square[rows][cols];
-            testMaze = new int[rows][cols];
             // iterate thru maze
             for (int i = 0; i < rows; i++) {
                 for (int j = 0; j < cols; j++) {
                     int temp = scanner.nextInt();
                     maze[i][j] = new Square(i, j, temp);
-                    testMaze[i][j] = temp;
 
                 }
             }
-            for (int[] x : testMaze) {
-                for (int y : x) {
-                }
-            }
+
             scanner.close();
 
             return true;
@@ -48,67 +48,34 @@ public class Maze {
 
     }
 
-    public boolean getSolved(){
-        return solved;
-    }
-
-    public boolean getSolvable(){
-        return isSolveable;
-    }
-
-    public void setSolved(boolean a){
-        solved = a;
-    }
-    public void setSolvable(boolean a){
-        isSolveable = a;
-    }
-
     public List<Square> getNeighbors(Square s) {
-
-        int row = s.getRow();
-        int col = s.getCol();
-
-        ArrayList<Square> neighbors = new ArrayList<>();
-        if (row - 1 > 0) {
-            if (maze[row - 1][col] != null) {
-                neighbors.add(maze[row - 1][col]);
-            }
+        ArrayList<Square> neighbors = new ArrayList<Square>();
+        if (s.getCol() + 1 < cols) {
+            neighbors.add(maze[s.getRow()][s.getCol() + 1]);
+        }
+        if (s.getRow() - 1 >= 0) {
+            neighbors.add(maze[s.getRow() - 1][s.getCol()]);
         }
 
-        if (row + 1 < maze.length) {
-            if (maze[row + 1][col] != null) {
-                neighbors.add(maze[row + 1][col]);
-
-            }
+        if (s.getCol() - 1 >= 0) {
+            neighbors.add(maze[s.getRow()][s.getCol() - 1]);
         }
-
-        if (col - 1 > 0) {
-            if (maze[row][col - 1] != null) {
-                neighbors.add(maze[row][col - 1]);
-            }
+        if (s.getRow() + 1 < rows) {
+            neighbors.add(maze[s.getRow() + 1][s.getCol()]);
         }
-
-        if (col + 1 < maze[0].length) {
-            if (maze[row][col + 1] != null) {
-                neighbors.add(maze[row][col + 1]);
-            }
-        }
-
-    
-
-    return neighbors;
-
+        return neighbors;
     }
 
     public void reset() {
 
-        for (int i = 0; i < maze.length; i++) {
-            for (int j = 0; j < maze[0].length; j++) {
-                maze[i][j].reset();
+        for (int i = 0; i < rows; i++) {
+            for (int j = 0; j < cols; j++) {
+                if (maze[i][j].getType() == 0) {
+                    maze[i][j] = new Square(i, j, 0);
+                }
             }
         }
-        isSolveable = false;
-        solved = false;
+
     }
 
     public String toString() {
@@ -120,14 +87,18 @@ public class Maze {
             }
             ret += "\n";
         }
+
+        
+
+
         return ret;
     }
 
     public Square getStart() {
-        for (int i = 0; i < testMaze.length; i++) {
-            for (int j = 0; j < testMaze[0].length; j++) {
+        for (int i = 0; i < rows; i++) {
+            for (int j = 0; j < cols; j++) {
 
-                if (testMaze[i][j] == 2) {
+                if (maze[i][j].getType() == 2) {
                     return maze[i][j];
                 }
             }
@@ -136,9 +107,9 @@ public class Maze {
     }
 
     public Square getEnd() {
-        for (int i = 0; i < testMaze.length; i++) {
-            for (int j = 0; j < testMaze[0].length; j++) {
-                if (testMaze[i][j] == 3) {
+        for (int i = 0; i < rows; i++) {
+            for (int j = 0; j < cols; j++) {
+                if (maze[i][j].getType() == 3) {
                     return maze[i][j];
                 }
             }
